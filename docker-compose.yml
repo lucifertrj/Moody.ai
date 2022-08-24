@@ -1,0 +1,11 @@
+version:  "1.0.1"
+
+services:
+  moody:
+    container_name: moody
+    image: lucifertrj/moody
+    ports:
+      - "5000:5000"
+    build:
+      context: .
+      dockerfile: Dockerfile
