@@ -1,0 +1,14 @@
+<html>
+<head>
+    <title>Moody</title>
+    <link rel="stylesheet" href="../static/css/main_styles.css">
+</head>
+<body>
+    <h3>Movie</h3>
+    <button type="button" onclick="window.location.href='{{ url_for('movieRecommend') }}';">Movie Recommendation based on Mood</button>
+    
+    <h2>Song</h2>
+    <button type="button" onclick="window.location.href='{{ url_for('songRecommend') }}';">Song Recommendation based on Mood</button>
+    
+</body>
+</html>

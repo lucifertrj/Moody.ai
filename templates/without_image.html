@@ -1,0 +1,12 @@
+<html>
+<head>
+    <title>Moody</title>
+    <link rel="stylesheet" href="../static/css/main_styles.css">
+</head>
+<body>
+    {%for emotion in emotions%}
+        <input type="radio" name={{emotion}} id={{emotion}} value={{emotion}}>{{emotion.upper()}}</input><br/>
+    {%endfor%}
+    <button type="button" onclick="window.location.href='{{ url_for('userRecommendation') }}';">Movie Recommendation based on Mood</button>
+</body>
+</html>

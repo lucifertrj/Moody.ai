@@ -1,0 +1,33 @@
+<html>
+<head>
+    <title>Moody</title>
+    <link rel="stylesheet" href="../static/css/main_styles.css">
+</head>
+<body>
+    <h1>How is your Mood today?</h1>
+    <h3>Upload your Selfie to try real-time emotion recognition </h3>
+    <form action = "/recommendation" method = "POST" 
+    enctype = "multipart/form-data">
+         <input type = "file" name = "file"/>
+         <br/>
+         <input type = "submit"/>
+    </form> 
+    <br/>
+    <button type="button" onclick="window.location.href='{{ url_for('withoutImage') }}';">Try without Image</button>
+</body>
+
+<script>
+    $(document).ready(
+        function(){
+            $('input:file').change(
+                function(){
+                    if ($(this).val()) {
+                        $('input:submit').attr('disabled',false);
+                        // or, as has been pointed out elsewhere:
+                        // $('input:submit').removeAttr('disabled'); 
+                    } 
+                }
+                );
+        });
+</script>
+</html>

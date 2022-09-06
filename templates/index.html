@@ -1,13 +1,15 @@
 <html>
 <head>
     <title>Moody</title>
+    <link rel="stylesheet" href="../static/css/main_styles.css">
 </head>
 <body>
-    <h1>Moody</h1>
-    <h3>Refresh your <span class="keyword">mood<span> with us</h3>
+    <h1 class="heading">Moody</h1>
+    <h3>Refresh your <span class="keyword">Mood<span> with us</h3>
     <h2> Facial Emotion Recognition </h2>
-    <p> Movie and Song Recommendation based on Mood </p>
+    <button type="button" onclick="window.location.href='{{ url_for('mood') }}';">Movie and Song Recommendation based on Mood</button>
+    
     <h2> Quote Emotion Recognition </h2>
-    <p> Mood Sentiment Analysis of Famous Quote </p>
+    <button class="btn"> Mood Sentiment Analysis of Famous Quote </button>
 </body>
 </html>

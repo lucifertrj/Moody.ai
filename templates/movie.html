@@ -1,0 +1,13 @@
+<html>
+<head>
+    <title>Moody</title>
+    <link rel="stylesheet" href="../static/css/movie_song.css">
+</head>
+<body>
+    {% for data in name%}
+     <h3 class="title">Title: {{data[0]}}</h3>
+     <h4 class="desc-head">Description: </h4>
+     <p class="desc">{{data[1]}}</p>
+    {% endfor %}
+</body>
+</html>
