@@ -1,7 +1,4 @@
-from crypt import methods
-from turtle import mode
-from unicodedata import name
-from flask import Flask,session,render_template,flash,url_for,request
+from flask import Flask,session,render_template,flash,url_for,request,redirect
 import os
 import recommend
 from werkzeug.utils import secure_filename
@@ -26,20 +23,23 @@ app.config["UPLOAD_FOLDER"] = "static/"
 def home_page():
     return render_template("index.html")
 
-@app.route('/mood')
+@app.route('/mood',methods = ['GET', 'POST'])
 def mood():
+    if request.method == 'POST':
+        f = request.files['file']
+        filename = secure_filename(f.filename)
+        f.save(app.config['UPLOAD_FOLDER'] + filename)
+        detFace_fromImg = model.detectFace(filename)
+        if detFace_fromImg == -999:
+            return render_template("noImg.html")
+        else:
+            target = model.giveLabel(f"{app.config['UPLOAD_FOLDER']}{detFace_fromImg}_predicted.jpg")
+            TARGET = CLASS_LABELS[target]
+            return redirect(url_for(userRecommendation))
     return render_template("mood.html")
 
 @app.route('/recommendation',methods = ['GET', 'POST'])
 def userRecommendation():
-    if request.method == 'POST':
-        print("in")
-        f = request.files['file']
-        filename = secure_filename(f.filename)
-        f.save(app.config['UPLOAD_FOLDER'] + filename)
-        target = model.giveLabel(app.config['UPLOAD_FOLDER'] + filename)
-        TARGET = CLASS_LABELS[target]
-    
     return render_template("requestPage.html")
 
 @app.route('/withoutimage',methods = ['GET','POST'])
@@ -47,21 +47,18 @@ def withoutImage():
     choice = ['happy','sad','neutral','angry','surprise','fear','disgust'] 
     if request.method == 'POST':
         option = request.form.getlist('options')
-        print(option)
     return render_template("without_image.html",emotions = choice)
     
 @app.route('/movie')
 def movieRecommend():
-    getEmotion = userRecommendation()
-    movieEngine = recommend.movieRecommendation(getEmotion)
+    movieEngine = recommend.movieRecommendation("happy")
     dataDict = {"Movie":list(movieEngine['Anime']),'Description':list(movieEngine['Description'])}
     movieData = zip(dataDict['Movie'],dataDict['Description'])
     return render_template('movie.html',name=movieData)
 
 @app.route('/song')
 def songRecommend():
-    getEmotion = userRecommendation()
-    songEngine = recommend.songRecommendation(getEmotion)
+    songEngine = recommend.songRecommendation("happy")
     dataDict = {"Artist":list(songEngine['artist']),'Album':list(songEngine['album']),'Name':list(songEngine['name'])}
     songData = zip(dataDict['Name'],dataDict['Album'],dataDict['Artist'])
     return render_template('song.html',name = songData)
