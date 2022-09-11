@@ -40,7 +40,7 @@ $ flask run
 
 ## Dataset - FER-2013
 
-[![dataset](https://www.researchgate.net/profile/Martin-Kampel/publication/311573401/figure/fig1/AS:613880195723264@1523371852035/Example-images-from-the-FER2013-dataset-3-illustrating-variabilities-in-illumination.png)](https://www.researchgate.net/figure/Example-images-from-the-FER2013-dataset-3-illustrating-variabilities-in-illumination_fig1_311573401)
+<img src="https://miro.medium.com/max/1200/1*nXqJ4lMiBRp4Ilm3bpRxuA.png" alt="dataset">
 
 The data consists of 48x48 pixel grayscale images of faces. The faces have been automatically registered so that the face is more or less centred and occupies about the same amount of space in each image.
 
@@ -100,5 +100,5 @@ If you have any feedback, please reach out to us at admin@animevyuh.org
 
 ## Contributors
 
-[Tarun R Jain](https://twitter.com/TRJ_0751)
-[Himanshu Agarwal](https://twitter.com/himture)
+- [Tarun R Jain](https://twitter.com/TRJ_0751)
+- [Himanshu Agarwal](https://twitter.com/himture)
