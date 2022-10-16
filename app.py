@@ -1,8 +1,9 @@
-from flask import Flask,session,render_template,flash,url_for,request,redirect
+from flask import Flask,session,render_template,flash,url_for,request,redirect, Response
 import os
 import recommend
 from werkzeug.utils import secure_filename
 import model
+import cv2
 
 CLASS_LABELS = {
     0:'angry',
@@ -14,6 +15,7 @@ CLASS_LABELS = {
     6:"surprise"
 }
 global TARGET
+global frame
 
 app = Flask(__name__)
 app.secret_key = os.urandom(16)
@@ -25,8 +27,9 @@ def home_page():
 
 @app.route('/mood',methods = ['GET', 'POST'])
 def mood():
+    global frame
     if request.method == 'POST':
-        f = request.files['file']
+        f = cv2.imwrite(app.config['UPLOAD_FOLDER'], frame)
         filename = secure_filename(f.filename)
         f.save(app.config['UPLOAD_FOLDER'] + filename)
         detFace_fromImg = model.detectFace(filename)
@@ -62,6 +65,23 @@ def songRecommend():
     dataDict = {"Artist":list(songEngine['artist']),'Album':list(songEngine['album']),'Name':list(songEngine['name'])}
     songData = zip(dataDict['Name'],dataDict['Album'],dataDict['Artist'])
     return render_template('song.html',name = songData)
+
+def gen_frames():  # generate frame by frame from camera
+    global out, capture,rec_frame, frame
+    camera = cv2.VideoCapture(0)
+    while True:
+        success, frame = camera.read()
+        try:
+            ret, buffer = cv2.imencode('.jpg', cv2.flip(frame,1))
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        except Exception as e:
+            pass
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
     app.run(debug=False)
